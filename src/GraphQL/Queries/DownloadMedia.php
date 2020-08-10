@@ -1,6 +1,6 @@
 <?php
 
-namespace Marqant\LaravelMediaLibraryGraphQL\GraphQL\Mutations;
+namespace Marqant\LaravelMediaLibraryGraphQL\GraphQL\Queries;
 
 use \Exception;
 use Illuminate\Pipeline\Pipeline;

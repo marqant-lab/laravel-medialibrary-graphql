@@ -1,6 +1,6 @@
 <?php
 
-namespace Marqant\LaravelMediaLibraryGraphQL\Tests\GraphQL\Mutations;
+namespace Marqant\LaravelMediaLibraryGraphQL\Tests\GraphQL\Queries;
 
 use Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
@@ -61,7 +61,7 @@ class DownloadMediaTest extends TestCase
 
         // execute GraphQL mutation 'downloadMedia'
         $downloadMediaResponse = $this->postGraphQL([
-            "query" => 'mutation DownloadMedia($uuid: String!) {
+            "query" => 'query DownloadMedia($uuid: String!) {
                     downloadMedia(uuid: $uuid)
                 }',
             "variables" => [
