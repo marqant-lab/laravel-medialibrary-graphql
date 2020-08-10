@@ -1,0 +1,34 @@
+{
+    "name": "marqant-lab/laravel-medialibrary-graphql",
+    "description": "Package for assign and get media files with Eloquent models through GraphQL.",
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dmytro Sydorenko",
+            "email": "dmytro@du.digital"
+        }
+    ],
+    "require": {
+        "laravel/framework": "^7.0",
+        "nuwave/lighthouse": "^4.16",
+        "spatie/laravel-medialibrary": "^8.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Marqant\\LaravelMediaLibraryGraphQL\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Marqant\\LaravelMediaLibraryGraphQL\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+               "Marqant\\LaravelMediaLibraryGraphQL\\Providers\\LaravelMediaLibraryGraphQLServiceProvider"
+            ]
+        }
+    }
+}

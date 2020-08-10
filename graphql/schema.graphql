@@ -1,0 +1,45 @@
+##########
+
+extend type Query @guard {
+    "Get all media for owner Model by ID"
+    getMedia(id: Int!): [Media] @field(resolver: "Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\queries\\GetMedia")
+}
+
+##########
+
+extend type Mutation @guard {
+    "Upload File mutation: id(ID of a Model to attach file), file, name(name of Media), properties(some more props)"
+    uploadFile(id: Int!, file: Upload!, name: String, properties: Json): [Media]
+        @field(resolver: "Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Mutations\\UploadFile")
+    "Download media file for owner Model by  Media uuid"
+    downloadMedia(uuid: String!): String!
+        @field(resolver: "Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Mutations\\DownloadMedia")
+    "Delete one current Media for owner Model by Media uuid"
+    deleteMedia(uuid: String!): String
+        @field(resolver: "Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Mutations\\DeleteMedia")
+    "Delete all Media for owner Model by ID"
+    deleteAllMedia(id: Int!): String
+        @field(resolver: "Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Mutations\\DeleteAllMedia")
+}
+
+##########
+
+type Media {
+    id: Int!
+    name: String!
+    fileName: String!
+    path: String!
+    url: String!
+    downloadUrl: String!
+    properties: Json
+    type: String!
+    uuid: String!
+    createdAt: DateTime! @rename(attribute: "created_at")
+    updatedAt: DateTime @rename(attribute: "updated_at")
+}
+
+"Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec"
+scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
+
+"Json scalar from the mll-lab/graphql-php-scalars package."
+scalar Json @scalar(class: "Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Scalars\\JSON")
