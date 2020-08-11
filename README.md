@@ -68,6 +68,7 @@ And add this to your 'config/lighthouse.php':
 After this add import to your `schema.graphql`
 
 ```graphql
+#import ../vendor/marqant-lab/lighthouse-json/graphql/*.graphql
 #import ../vendor/marqant-lab/laravel-medialibrary-graphql/graphql/*.graphql
 ```
 
@@ -76,16 +77,16 @@ After this add import to your `schema.graphql`
 
 | Query | Requires input | Returns |
 | ------  | ----- | ----- |
-| getMedia | id: Int! (ID of the model need to delete all files from) | Media |
+| getMedia | id: Int! (ID of the model need to delete all files from) | [Media] |
+| downloadMedia | uuid: String! | String! |
 
 
 ## Mutations
 
 | Mutation | Requires input | Returns |
 | ------  | ----- | ----- |
-| uploadFile | id: Int! (ID of the model need to attach file to), | Media |
+| uploadFile | id: Int! (ID of the model need to attach file to), | [Media] |
 |   | file: Upload!, name: String, properties: Json |  |
-| downloadMedia | uuid: String! | String! |
 | deleteMedia | uuid: String! | String |
 | deleteAllMedia | id: Int! (ID of the model need to delete all files from) | String |
 

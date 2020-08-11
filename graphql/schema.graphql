@@ -40,6 +40,3 @@ type Media {
 
 "Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec"
 scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
-
-"Json scalar from the mll-lab/graphql-php-scalars package."
-scalar Json @scalar(class: "Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Scalars\\JSON")

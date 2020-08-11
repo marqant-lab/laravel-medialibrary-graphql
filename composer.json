@@ -12,7 +12,8 @@
     "require": {
         "laravel/framework": "^7.0",
         "nuwave/lighthouse": "^4.16",
-        "spatie/laravel-medialibrary": "^8.0.0"
+        "spatie/laravel-medialibrary": "^8.0.0",
+        "marqant-lab/lighthouse-json": "^0.0.2"
     },
     "autoload": {
         "psr-4": {
