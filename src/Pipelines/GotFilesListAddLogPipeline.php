@@ -5,14 +5,14 @@ namespace Marqant\LaravelMediaLibraryGraphQL\Pipelines;
 use Closure;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Marqant\LaravelMediaLibraryGraphQL\Contracts\Pipeline;
+use Marqant\LaravelMediaLibraryGraphQL\Contracts\Pipe;
 
 /**
  * Class GotFilesListAddLogPipeline
  *
  * @package Marqant\LaravelMediaLibraryGraphQL\Pipelines
  */
-class GotFilesListAddLogPipeline implements Pipeline
+class GotFilesListAddLogPipeline implements Pipe
 {
     /**
      * @param         $content

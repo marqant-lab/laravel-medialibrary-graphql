@@ -3,19 +3,19 @@
 namespace Marqant\LaravelMediaLibraryGraphQL\Pipelines;
 
 use Closure;
-use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Http\UploadedFile;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Marqant\LaravelMediaLibraryGraphQL\Contracts\Pipeline;
+use Marqant\LaravelMediaLibraryGraphQL\Contracts\Pipe;
 
 /**
  * Class UploadedFileAddLogPipeline
  *
  * @package Marqant\LaravelMediaLibraryGraphQL\Pipelines
  */
-class UploadedFileAddLogPipeline implements Pipeline
+class UploadedFileAddLogPipeline implements Pipe
 {
     /**
      * @param         $content

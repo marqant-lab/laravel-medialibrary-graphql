@@ -97,7 +97,7 @@ After this add import to your `schema.graphql`
 
 uploadFile mutation example:
 
-```graphql
+```GraphQL
 mutation UploadFile($id: Int!, $file: Upload!, $name: String, $properties: Json) {
   uploadFile(id: $id, file: $file, name: $name, properties: $properties) {
     id

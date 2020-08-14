@@ -7,9 +7,9 @@ use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Marqant\LaravelMediaLibraryGraphQL\Contracts\Pipeline;
+use Marqant\LaravelMediaLibraryGraphQL\Contracts\Pipe;
 
-class DeletedAllMediaFilesAddLogPipeline implements Pipeline
+class DeletedAllMediaFilesAddLogPipeline implements Pipe
 {
     /**
      * @param         $content

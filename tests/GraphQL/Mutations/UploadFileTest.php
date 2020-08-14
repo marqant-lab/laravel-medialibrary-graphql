@@ -25,12 +25,14 @@ class UploadFileTest extends TestCase
     {
         // create a User
         $User = factory(config('auth.providers.users.model'))->create();
+
         // authenticate the User
         Sanctum::actingAs(
             $User,
             ['*']
         );
 
+        // set the owner
         if (config('auth.providers.users.model') == config('laravel-medialibrary-graphql.models.main')) {
             $Owner = $User;
         } else {
@@ -55,17 +57,25 @@ class UploadFileTest extends TestCase
                 'map' => /** @lang JSON */ '{
                     "0": ["variables.file"]
                 }',
-            ], [
+            ],
+            [
                 '0' => UploadedFile::fake()->create('some-file.pdf', 1024),
-            ], [
+            ],
+            [
                 'Authorization' => 'Bearer ' . $User->createToken($User->id)->plainTextToken,
             ]
         );
 
+        // assert that the status is ok (200)
         $uploadFileResponse->assertOk();
 
+        // set the media with the default collection
         $Medias = $Owner->getMedia(config('laravel-medialibrary-graphql.def_media_collection'));
+
+        // assert that the array of models is not empty
         $this->assertNotEmpty($Medias);
+
+        // assert that there is one entry exactly
         $this->assertCount(1, $Medias);
     }
 }

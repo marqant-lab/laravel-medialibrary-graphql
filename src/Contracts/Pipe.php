@@ -4,12 +4,8 @@ namespace Marqant\LaravelMediaLibraryGraphQL\Contracts;
 
 use Closure;
 
-/**
- * Interface Pipeline
- *
- * @package Marqant\LaravelMediaLibraryGraphQL\Contracts
- */
-interface Pipeline
+/** @package Marqant\LaravelMediaLibraryGraphQL\Contracts */
+interface Pipe
 {
     public function handle($content, Closure $next);
 }
