@@ -47,7 +47,7 @@ php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServicePr
 ```
 After you need to run migrations:
 ```shell script
-$ php artisan migrate
+php artisan migrate
 ```
 
 Add to your .env config **MEDIA_API_KEY=** security api key 
@@ -145,14 +145,14 @@ response example:
 If you want to execute package tests add this to the phpunit.xml
 
 ```xml
-        <testsuite name="AuthGraphQL">
-            <directory suffix="Test.php">./vendor/marqant-lab/laravel-medialibrary-graphql/tests</directory>
-        </testsuite>
+<testsuite name="LaravelMedialibraryGraphQL">
+    <directory suffix="Test.php">./vendor/marqant-lab/laravel-medialibrary-graphql/tests</directory>
+</testsuite>
 ```
 
 And after you can check it by executing:
 ```shell script
-$ php artisan test --group=GraphQLMediaLibrary
+php artisan test --group=GraphQLMediaLibrary
 or
-$ phpunit --group=GraphQLMediaLibrary
+phpunit --group=GraphQLMediaLibrary
 ```
