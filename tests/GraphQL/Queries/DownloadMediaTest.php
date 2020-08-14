@@ -2,19 +2,19 @@
 
 namespace Marqant\LaravelMediaLibraryGraphQL\Tests\GraphQL\Queries;
 
+use Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Marqant\LaravelMediaLibraryGraphQL\Tests\TestCase as BaseTestCase;
 
 /**
  * Class DownloadMediaTest
  *
  * @package Marqant\LaravelMediaLibraryGraphQL\Tests\GraphQL\Mutations
  */
-class DownloadMediaTest extends BaseTestCase
+class DownloadMediaTest extends TestCase
 {
     /**
      * @group GraphQLMediaLibrary

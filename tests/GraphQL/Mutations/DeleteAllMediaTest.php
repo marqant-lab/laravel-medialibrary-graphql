@@ -2,10 +2,10 @@
 
 namespace Marqant\LaravelMediaLibraryGraphQL\Tests\GraphQL\Mutations;
 
-use Spatie\MediaLibrary\HasMedia;
 use Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Http\UploadedFile;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
@@ -46,15 +46,15 @@ class DeleteAllMediaTest extends TestCase
         $Owner->addMedia(UploadedFile::fake()->create('some-file.pdf', 1024))
             ->usingName('PDF file')
             ->withCustomProperties([
-                "title" => "test title",
-                "description" => "test description",
+                'title'       => 'test title',
+                'description' => 'test description',
             ])
             ->toMediaCollection(config('laravel-medialibrary-graphql.def_media_collection'));
         $Owner->addMedia(UploadedFile::fake()->create('one-more-file.pdf', 1024))
             ->usingName('PDF file')
             ->withCustomProperties([
-                "title" => "test title",
-                "description" => "test description",
+                'title'       => 'test title',
+                'description' => 'test description',
             ])
             ->toMediaCollection(config('laravel-medialibrary-graphql.def_media_collection'));
 
@@ -72,11 +72,11 @@ class DeleteAllMediaTest extends TestCase
 
         // execute GraphQL mutation 'deleteAllMedia'
         $deleteAllMediaResponse = $this->postGraphQL([
-            "query" => 'mutation DeleteAllMedia($id: Int!) {
+            'query' => 'mutation DeleteAllMedia($id: Int!) {
                     deleteAllMedia(id: $id)
                 }',
-            "variables" => [
-                "id" => $Owner->id
+            'variables' => [
+                'id' => $Owner->id
             ]
         ], [
             'Authorization' => 'Bearer ' . $User->createToken($User->id)->plainTextToken,

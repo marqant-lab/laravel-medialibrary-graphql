@@ -2,10 +2,10 @@
 
 namespace Marqant\LaravelMediaLibraryGraphQL\Tests\GraphQL\Queries;
 
+use Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Marqant\LaravelMediaLibraryGraphQL\Tests\TestCase;
 
 /**
  * Class GraphQLMediaLibrary
