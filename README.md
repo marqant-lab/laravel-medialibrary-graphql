@@ -1,8 +1,6 @@
-# "Laravel media library GraphQL" package
+# Laravel Medialibrary GraphQL
 
-## What is it?
-
-This package contains GraphQL queries and mutations for assign and get media files with Eloquent models.
+This package contains GraphQL queries and mutations to manage any type of media files and make them attacheable to any given model.
 
 ## Installation
 
@@ -18,12 +16,12 @@ But you can change this after publish package config and change `'laravel-medial
 Require the package through composer.
 
 ```shell script
-$ compsoer require marqant-lab/laravel-medialibrary-graphql
+compsoer require marqant-lab/laravel-medialibrary-graphql
 ```
 
 Publish config:
 ```shell script
-$ php artisan vendor:publish --provider="Marqant\LaravelMediaLibraryGraphQL\Providers\LaravelMediaLibraryGraphQLServiceProvider" --tag=config
+php artisan vendor:publish --provider="Marqant\LaravelMediaLibraryGraphQL\Providers\LaravelMediaLibraryGraphQLServiceProvider" --tag=config
 ```
 
 at this config you can specify a model for assign files ('models.main') and many other settings.  
@@ -75,20 +73,20 @@ After this add import to your `schema.graphql`
 
 ## Queries
 
-| Query | Requires input | Returns |
-| ------  | ----- | ----- |
-| getMedia | id: Int! (ID of the model need to delete all files from) | [Media] |
-| downloadMedia | uuid: String! | String! |
+| Query         | Requires input                                           | Returns |
+| ------------- | -------------------------------------------------------- | ------- |
+| getMedia      | id: Int! (ID of the model need to delete all files from) | [Media] |
+| downloadMedia | uuid: String!                                            | String! |
 
 
 ## Mutations
 
-| Mutation | Requires input | Returns |
-| ------  | ----- | ----- |
-| uploadFile | id: Int! (ID of the model need to attach file to), | [Media] |
-|   | file: Upload!, name: String, properties: Json |  |
-| deleteMedia | uuid: String! | String |
-| deleteAllMedia | id: Int! (ID of the model need to delete all files from) | String |
+| Mutation       | Requires input                                           | Returns |
+| -------------- | -------------------------------------------------------- | ------- |
+| uploadFile     | id: Int! (ID of the model need to attach file to),       | [Media] |
+|                | file: Upload!, name: String, properties: Json            |         |
+| deleteMedia    | uuid: String!                                            | String  |
+| deleteAllMedia | id: Int! (ID of the model need to delete all files from) | String  |
 
 
 uploadFile mutation example:
