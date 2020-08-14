@@ -2,23 +2,20 @@
 
 namespace Marqant\LaravelMediaLibraryGraphQL\Tests\GraphQL\Queries;
 
-use Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Marqant\LaravelMediaLibraryGraphQL\Tests\TestCase as BaseTestCase;
 
 /**
  * Class DownloadMediaTest
  *
  * @package Marqant\LaravelMediaLibraryGraphQL\Tests\GraphQL\Mutations
  */
-class DownloadMediaTest extends TestCase
+class DownloadMediaTest extends BaseTestCase
 {
-    use MakesGraphQLRequests;
-
     /**
      * @group GraphQLMediaLibrary
      *
@@ -44,8 +41,8 @@ class DownloadMediaTest extends TestCase
         $Owner->addMedia(UploadedFile::fake()->create('some-file.pdf', 1024))
             ->usingName('PDF file')
             ->withCustomProperties([
-                "title" => "test title",
-                "description" => "test description",
+                'title'       => 'test title',
+                'description' => 'test description',
             ])
             ->toMediaCollection(config('laravel-medialibrary-graphql.def_media_collection'));
 
@@ -61,11 +58,11 @@ class DownloadMediaTest extends TestCase
 
         // execute GraphQL mutation 'downloadMedia'
         $downloadMediaResponse = $this->postGraphQL([
-            "query" => 'query DownloadMedia($uuid: String!) {
+            'query' => 'query DownloadMedia($uuid: String!) {
                     downloadMedia(uuid: $uuid)
                 }',
-            "variables" => [
-                "uuid" => $Media->uuid
+            'variables' => [
+                'uuid' => $Media->uuid
             ]
         ], [
             'Authorization' => 'Bearer ' . $User->createToken($User->id)->plainTextToken,
@@ -80,7 +77,7 @@ class DownloadMediaTest extends TestCase
                 ],
             ]);
 
-        $fileBase64 = $downloadMediaResponse->json('data.downloadMedia');
+        $fileBase64  = $downloadMediaResponse->json('data.downloadMedia');
         $checkBase64 = $this->is_base64($fileBase64);
 
         // check if received valid Base64 file string
@@ -94,7 +91,10 @@ class DownloadMediaTest extends TestCase
      */
     private function is_base64(string $str): bool
     {
-        if ( base64_encode(base64_decode($str, true)) === $str) return true;
-        else return false;
+        if (base64_encode(base64_decode($str, true)) === $str) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

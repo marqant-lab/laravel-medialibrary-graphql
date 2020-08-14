@@ -2,11 +2,10 @@
 
 namespace Marqant\LaravelMediaLibraryGraphQL\Tests\GraphQL\Queries;
 
-use Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
+use Marqant\LaravelMediaLibraryGraphQL\Tests\TestCase;
 
 /**
  * Class GraphQLMediaLibrary
@@ -15,8 +14,6 @@ use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
  */
 class GetMediaTest extends TestCase
 {
-    use MakesGraphQLRequests;
-
     /**
      * @group GraphQLMediaLibrary
      *
@@ -42,14 +39,14 @@ class GetMediaTest extends TestCase
         $Owner->addMedia(UploadedFile::fake()->create('some-file.pdf', 1024))
             ->usingName('PDF file')
             ->withCustomProperties([
-                "title" => "test title",
-                "description" => "test description",
+                'title'       => 'test title',
+                'description' => 'test description',
             ])
             ->toMediaCollection(config('laravel-medialibrary-graphql.def_media_collection'));
 
         // execute GraphQL query 'getMedia'
         $getMediaResponse = $this->postGraphQL([
-            "query" => 'query GetMedia($id: Int!) {
+            'query' => 'query GetMedia($id: Int!) {
                     getMedia(id: $id) {
                         id
                         name
@@ -64,8 +61,8 @@ class GetMediaTest extends TestCase
                         updatedAt
                     }
                 }',
-            "variables" => [
-                "id" => $Owner->id
+            'variables' => [
+                'id' => $Owner->id
             ]
         ], [
             'Authorization' => 'Bearer ' . $User->createToken($User->id)->plainTextToken,
@@ -78,17 +75,17 @@ class GetMediaTest extends TestCase
                 'data' => [
                     'getMedia' => [
                         '*' => [
-                            "id",
-                            "name",
-                            "fileName",
-                            "path",
-                            "url",
-                            "downloadUrl",
-                            "properties",
-                            "type",
-                            "uuid",
-                            "createdAt",
-                            "updatedAt",
+                            'id',
+                            'name',
+                            'fileName',
+                            'path',
+                            'url',
+                            'downloadUrl',
+                            'properties',
+                            'type',
+                            'uuid',
+                            'createdAt',
+                            'updatedAt',
                         ]
                     ],
                 ],
