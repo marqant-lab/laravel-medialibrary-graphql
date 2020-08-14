@@ -2,16 +2,16 @@
 
 This package contains GraphQL queries and mutations to manage any type of media files and make them attacheable to any given model.
 
-## Installation
+## About 
 
-We use
-[Lighthouse](https://lighthouse-php.com/master/getting-started/installation.html)
- for GraphQL part and
- ["spatie/laravel-medialibrary"](https://docs.spatie.be/laravel-medialibrary/v8/introduction/)
- package to work with files.
+We use [Lighthouse](https://lighthouse-php.com/master/getting-started/installation.html) for GraphQL.
+
+The management of the mediafiles is based on the [spatie/laravel-medialibrary](https://docs.spatie.be/laravel-medialibrary/v8/introduction/) package.
 
 By default this package uses Model from config `auth.providers.users.model` for assign files.  
 But you can change this after publish package config and change `'laravel-medialibrary-graphql.models.main'` value.  
+
+## Installation
 
 Require the package through composer.
 
@@ -19,47 +19,54 @@ Require the package through composer.
 compsoer require marqant-lab/laravel-medialibrary-graphql
 ```
 
-Publish config:
+Publish the configuration.
+
 ```shell script
 php artisan vendor:publish --provider="Marqant\LaravelMediaLibraryGraphQL\Providers\LaravelMediaLibraryGraphQLServiceProvider" --tag=config
 ```
 
-at this config you can specify a model for assign files ('models.main') and many other settings.  
-The model should implements HasMedia (Spatie\MediaLibrary\HasMedia)  
-and use InteractsWithMedia (Spatie\MediaLibrary\InteractsWithMedia).
+You will have to run the migrations to setup the media table.
+
+```schell script
+php artisan migrate
+```
+
+In this config you can specify a model to assign files to ('models.main') and many other settings. The model should implements `Spatie\MediaLibrary\HasMedia` interface and use `Spatie\MediaLibrary\InteractsWithMedia` trait.
+
 For example User model:
+
 ```php
-...
+<?php
+
+namespace App\Models;
 
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class User extends ... implements HasMedia
 {
-...
     use InteractsWithMedia;
-...
+    
+    // ...
 ```
 
-if you need Spatie\MediaLibrary config:
+If you need Spatie\MediaLibrary config:
+
 ```shell script
 php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config"
 ```
-After you need to run migrations:
-```shell script
-php artisan migrate
-```
 
-Add to your .env config **MEDIA_API_KEY=** security api key 
-if you planning to use web route _'media/download/'_ to download files.  
+If you plan to use the web route _'media/download/'_ to download files, add the `MEDIA_API_KEY` variable to your `.env` file to secure your applications downloads with an api key.  
+
 You need to set this key as 'apiKey' at headers.
-Example:  
+
+```
 GET http://your.awesome.site/media/download/4bb0e054-e98f-4906-b3f5-0277fd63a194/  
 Content-Type: application/json  
 apiKey: {your_secure_api_key}  
+```
 
-This package uses  _**@guard**_  directive for secure.  
-You can use our simple **"marqant-lab/auth-graphql"** package for this.
+This package uses  `@guard`  directive for secure. You need to setup our [marqant-lab/auth-graphql](https://github.com/marqant-lab/auth-graphql) package for this.
 
 And add this to your 'config/lighthouse.php':
 
@@ -69,7 +76,6 @@ After this add import to your `schema.graphql`
 #import ../vendor/marqant-lab/lighthouse-json/graphql/*.graphql
 #import ../vendor/marqant-lab/laravel-medialibrary-graphql/graphql/*.graphql
 ```
-
 
 ## Queries
 
@@ -138,8 +144,6 @@ response example:
       ...
 ```
 
-
-
 ## Tests
 
 If you want to execute package tests add this to the phpunit.xml
@@ -151,8 +155,9 @@ If you want to execute package tests add this to the phpunit.xml
 ```
 
 And after you can check it by executing:
+
 ```shell script
 php artisan test --group=GraphQLMediaLibrary
-or
+# or
 phpunit --group=GraphQLMediaLibrary
 ```
