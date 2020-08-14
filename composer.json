@@ -13,7 +13,8 @@
         "laravel/framework": "^7.0",
         "nuwave/lighthouse": "^4.16",
         "spatie/laravel-medialibrary": "^8.0.0",
-        "marqant-lab/lighthouse-json": "^0.0.2"
+        "marqant-lab/lighthouse-json": "^0.0.2",
+        "marqant-lab/auth-graphql": "^0.0.11"
     },
     "autoload": {
         "psr-4": {
