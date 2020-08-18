@@ -16,19 +16,19 @@ But you can change this after publish package config and change `'laravel-medial
 Require the package through composer.
 
 ```shell script
-compsoer require marqant-lab/laravel-medialibrary-graphql
+$ composer require marqant-lab/laravel-medialibrary-graphql
 ```
 
 Publish the configuration.
 
 ```shell script
-php artisan vendor:publish --provider="Marqant\LaravelMediaLibraryGraphQL\Providers\LaravelMediaLibraryGraphQLServiceProvider" --tag=config
+$ php artisan vendor:publish --provider="Marqant\LaravelMediaLibraryGraphQL\Providers\LaravelMediaLibraryGraphQLServiceProvider" --tag=config
 ```
 
 You will have to run the migrations to setup the media table.
 
 ```schell script
-php artisan migrate
+$ php artisan migrate
 ```
 
 In this config you can specify a model to assign files to ('models.main') and many other settings. The model should implements `Spatie\MediaLibrary\HasMedia` interface and use `Spatie\MediaLibrary\InteractsWithMedia` trait.
