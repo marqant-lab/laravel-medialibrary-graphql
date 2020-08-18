@@ -32,7 +32,7 @@ class DownloadedFileAddLogPipeline implements Pipe
 
         Log::info("\n    User: " . Auth::user()->name . "\n    {$content['action']} '"
             . $Media->name . "' (" . $Media->file_name . ")\n    of the model '"
-            . config('laravel-medialibrary-graphql.models.main') . "' (ID: {$FileOwner->id})\n");
+            . $content['model'] . "' (ID: {$FileOwner->id})\n");
 
         return  $next($content);
     }

@@ -35,8 +35,10 @@ class GetMedia
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $request = new Request();
-        $Model = app(config('laravel-medialibrary-graphql.models.main'));
+        $request     = new Request();
+        $model_key   = $args['model'] ?? 'default';
+        $model_class = config("laravel-medialibrary-graphql.models.$model_key");
+        $Model       = app($model_class);
 
         try {
             /** @var HasMedia $FileOwner */
@@ -49,6 +51,7 @@ class GetMedia
         $pipelines_data = [
             'action' => 'got files list',
             'owner'  => $FileOwner,
+            'model'  => $model_class,
         ];
 
         // execute pipelines

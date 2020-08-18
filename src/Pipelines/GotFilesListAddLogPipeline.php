@@ -23,8 +23,7 @@ class GotFilesListAddLogPipeline implements Pipe
     public function handle($content, Closure $next)
     {
         Log::info("\n    User: " . Auth::user()->name . "\n    {$content['action']}\n    of the model '"
-            . config('laravel-medialibrary-graphql.models.main')
-            . "' (ID: {$content['owner']->id})\n");
+            . $content['model'] . "' (ID: {$content['owner']->id})\n");
 
         return  $next($content);
     }

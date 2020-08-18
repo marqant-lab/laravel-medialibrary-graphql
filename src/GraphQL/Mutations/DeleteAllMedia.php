@@ -43,7 +43,9 @@ class DeleteAllMedia
             throw new Exception(__("Empty or wrong param(s)."));
         }
 
-        $Model = app(config('laravel-medialibrary-graphql.models.main'));
+        $model_key   = $args['model'] ?? 'default';
+        $model_class = config("laravel-medialibrary-graphql.models.$model_key");
+        $Model       = app($model_class);
 
         try {
             /** @var HasMedia $FileOwner */
@@ -56,6 +58,7 @@ class DeleteAllMedia
         $pipelines_data = [
             'action' => 'deleted all media files',
             'owner'  => $FileOwner,
+            'model'  => $model_class,
         ];
 
         // execute pipelines and save file after

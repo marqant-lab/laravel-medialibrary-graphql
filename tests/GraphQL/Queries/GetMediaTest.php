@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 
 /**
  * Class GraphQLMediaLibrary
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Storage;
  */
 class GetMediaTest extends TestCase
 {
+    use MakesGraphQLRequests;
+
     /**
      * @group GraphQLMediaLibrary
      *
@@ -29,10 +32,10 @@ class GetMediaTest extends TestCase
             ['*']
         );
 
-        if (config('auth.providers.users.model') == config('laravel-medialibrary-graphql.models.main')) {
+        if (config('auth.providers.users.model') == config('laravel-medialibrary-graphql.models.default')) {
             $Owner = $User;
         } else {
-            $Owner = factory(config('laravel-medialibrary-graphql.models.main'))->create();
+            $Owner = factory(config('laravel-medialibrary-graphql.models.default'))->create();
         }
 
         Storage::fake('public');

@@ -33,19 +33,20 @@ class UploadFileTest extends TestCase
         );
 
         // set the owner
-        if (config('auth.providers.users.model') == config('laravel-medialibrary-graphql.models.main')) {
+        if (config('auth.providers.users.model') == config('laravel-medialibrary-graphql.models.default')) {
             $Owner = $User;
         } else {
-            $Owner = factory(config('laravel-medialibrary-graphql.models.main'))->create();
+            $Owner = factory(config('laravel-medialibrary-graphql.models.default'))->create();
         }
 
         // execute GraphQL mutation 'uploadFile'
         $uploadFileResponse = $this->multipartGraphQL(
             [
                 'operations' => /** @lang JSON */ '{
-                    "query": "mutation UploadFile($id:Int!,$file:Upload!,$name:String,$properties:Json){uploadFile(id:$id,file:$file,name:$name,properties:$properties) {downloadUrl}}",
+                    "query": "mutation UploadFile($id:Int!,$file:Upload!,$model:String,$name:String,$properties:Json){uploadFile(id:$id,file:$file,model:$model,name:$name,properties:$properties) {downloadUrl}}",
                     "variables": {
                         "id": ' . $Owner->id . ',
+                        "model": null,
                         "name": "PDF file",
                         "properties": {
                             "title": "test title",

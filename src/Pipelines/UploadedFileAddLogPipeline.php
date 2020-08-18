@@ -31,8 +31,7 @@ class UploadedFileAddLogPipeline implements Pipe
         $FileOwner = $content['owner'];
 
         Log::info("\n    User: " . Auth::user()->name . "\n    {$content['action']} '{$content['name']}' "
-            . $File->getClientOriginalName() . "\n    to the model '"
-            . config('laravel-medialibrary-graphql.models.main')
+            . $File->getClientOriginalName() . "\n    to the model '" . $content['model']
             . "' (ID: {$FileOwner->id})\n    with properties: " . print_r($content['props'], true));
 
         return  $next($content);

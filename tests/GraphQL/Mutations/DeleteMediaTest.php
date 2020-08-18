@@ -35,10 +35,10 @@ class DeleteMediaTest extends TestCase
             ['*']
         );
 
-        if (config('auth.providers.users.model') == config('laravel-medialibrary-graphql.models.main')) {
+        if (config('auth.providers.users.model') == config('laravel-medialibrary-graphql.models.default')) {
             $Owner = $User;
         } else {
-            $Owner = factory(config('laravel-medialibrary-graphql.models.main'))->create();
+            $Owner = factory(config('laravel-medialibrary-graphql.models.default'))->create();
         }
 
         Storage::fake('public');
@@ -91,7 +91,7 @@ class DeleteMediaTest extends TestCase
                 ],
             ]);
 
-        $Model = app(config('laravel-medialibrary-graphql.models.main'));
+        $Model = app(config('laravel-medialibrary-graphql.models.default'));
         /** @var HasMedia $FileOwner */
         $FileOwner = $Model->findOrFail($Owner->id);
 

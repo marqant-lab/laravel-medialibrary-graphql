@@ -61,6 +61,7 @@ class DeleteMedia
             'action' => 'deleted file',
             'media'  => $Media,
             'owner'  => $FileOwner,
+            'model'  => get_class($FileOwner),
         ];
 
         // execute pipelines and delete file after

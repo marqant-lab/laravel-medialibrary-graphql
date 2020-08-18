@@ -22,8 +22,8 @@ class DeletedAllMediaFilesAddLogPipeline implements Pipe
         /** @var HasMedia|Model $FileOwner */
         $FileOwner = $content['owner'];
 
-        Log::info("\n    User: " . Auth::user()->name . "\n    {$content['action']} '\n    of the model '"
-            . config('laravel-medialibrary-graphql.models.main') . "' (ID: {$FileOwner->id})\n");
+        Log::info("\n    User: " . Auth::user()->name . "\n    {$content['action']}\n    of the model '"
+            . $content['model']. "' (ID: {$FileOwner->id})\n");
 
         return  $next($content);
     }

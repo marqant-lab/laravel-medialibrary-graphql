@@ -1,15 +1,20 @@
 # Laravel Medialibrary GraphQL
 
-This package contains GraphQL queries and mutations to manage any type of media files and make them attacheable to any given model.
+This package contains GraphQL queries and mutations to manage any type of media
+ files and make them attacheable to any given model.
 
 ## About 
 
-We use [Lighthouse](https://lighthouse-php.com/master/getting-started/installation.html) for GraphQL.
+We use [Lighthouse](https://lighthouse-php.com/master/getting-started/installation.html)
+ for GraphQL.
 
-The management of the mediafiles is based on the [spatie/laravel-medialibrary](https://docs.spatie.be/laravel-medialibrary/v8/introduction/) package.
+The management of the mediafiles is based on the
+ [spatie/laravel-medialibrary](https://docs.spatie.be/laravel-medialibrary/v8/introduction/) package.
 
-By default this package uses Model from config `auth.providers.users.model` for assign files.  
-But you can change this after publish package config and change `'laravel-medialibrary-graphql.models.main'` value.  
+By default this package uses Model from config `auth.providers.users.model`
+ for assign files.  
+But you can change this after publish package config and change
+ `'laravel-medialibrary-graphql.models.default'` value.  
 
 ## Installation
 
@@ -31,7 +36,9 @@ Publish the configuration.
 php artisan vendor:publish --provider="Marqant\LaravelMediaLibraryGraphQL\Providers\LaravelMediaLibraryGraphQLServiceProvider" --tag=config
 ```
 
-In this config you can specify a model to assign files to ('models.main') and many other settings. The model should implements `Spatie\MediaLibrary\HasMedia` interface and use `Spatie\MediaLibrary\InteractsWithMedia` trait.
+In this config you can specify a model to assign files to ('models.default')
+ and many other settings. The model should implements `Spatie\MediaLibrary\HasMedia`
+  interface and use `Spatie\MediaLibrary\InteractsWithMedia` trait.  
 
 For example User model:
 
@@ -47,6 +54,25 @@ class User extends ... implements HasMedia
     
     // ...
 ```
+Also you can add as many models as you need.  
+Example of config:
+
+```php
+/**
+     * Model(s) to attach media files to
+     *
+     * by default User model
+     *
+     * you can specify any model to attach media files
+     */
+    'models' => [
+        'default' => config('auth.providers.users.model'),
+        'one_more_model' => \Some\Namespace\Model::class,
+    ],
+```
+But in this case you need to send 'model' param for getMedia() query and uploadFile()
+ and deleteAllMedia() mutations.  
+If 'model' param is empty (null) then 'models.default' model will be taken to attach files.
 
 If you need Spatie\MediaLibrary config:
 
@@ -54,7 +80,9 @@ If you need Spatie\MediaLibrary config:
 php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config"
 ```
 
-If you plan to use the web route _'media/download/'_ to download files, add the `MEDIA_API_KEY` variable to your `.env` file to secure your applications downloads with an api key.  
+If you plan to use the web route _'media/download/'_ to download files, add the
+ `MEDIA_API_KEY` variable to your `.env` file to secure your application's
+  downloads with an api key.  
 
 You need to set this key as 'apiKey' at headers.
 
@@ -64,21 +92,9 @@ Content-Type: application/json
 apiKey: {your_secure_api_key}  
 ```
 
-This package uses  `@guard`  directive for secure. You need to setup our [marqant-lab/auth-graphql](https://github.com/marqant-lab/auth-graphql) package for this.
-
-And add this to your 'config/lighthouse.php':
-```php
-...
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Guard
-    |--------------------------------------------------------------------------
-...
-    */
-
-    'guard' => 'sanctum',
-...
-```
+This package uses  `@guard`  directive for secure. You need to setup our
+ [marqant-lab/auth-graphql](https://github.com/marqant-lab/auth-graphql)
+ package for this and follow all instructions of auth package.
 
 After this add import to your `schema.graphql`
 
@@ -89,27 +105,34 @@ After this add import to your `schema.graphql`
 
 ## Queries
 
-| Query         | Requires input                                           | Returns |
-| ------------- | -------------------------------------------------------- | ------- |
-| getMedia      | id: Int! (ID of the model need to delete all files from) | [Media] |
-| downloadMedia | uuid: String!                                            | String! |
+| Query         | Requires input                                            | Returns |
+| ------------- | --------------------------------------------------------  | ------- |
+| getMedia      | id: Int! (ID of the model need to delete all files from), | [Media] |
+|               | model: String (model key from config, if null 'default'   |         |
+|               | model will be taken)                                      |         |
+| downloadMedia | uuid: String!                                             | String! |
 
 
 ## Mutations
 
-| Mutation       | Requires input                                           | Returns |
-| -------------- | -------------------------------------------------------- | ------- |
-| uploadFile     | id: Int! (ID of the model need to attach file to),       | [Media] |
-|                | file: Upload!, name: String, properties: Json            |         |
-| deleteMedia    | uuid: String!                                            | String  |
-| deleteAllMedia | id: Int! (ID of the model need to delete all files from) | String  |
+| Mutation       | Requires input                                            | Returns |
+| -------------- | --------------------------------------------------------  | ------- |
+| uploadFile     | id: Int! (ID of the model need to attach file to),        | [Media] |
+|                | file: Upload!,                                            |         |
+|                | model: String (model key from config,                     |         |
+|                | if null 'default' model will be taken),                   |         |
+|                | name: String, properties: Json                            |         |
+| deleteMedia    | uuid: String!                                             | String  |
+| deleteAllMedia | id: Int! (ID of the model need to delete all files from), | String  |
+|                | model: String (model key from config,                     |         |
+|                | if null 'default' model will be taken),                   |         |
 
 
 uploadFile mutation example:
 
 ```GraphQL
-mutation UploadFile($id: Int!, $file: Upload!, $name: String, $properties: Json) {
-  uploadFile(id: $id, file: $file, name: $name, properties: $properties) {
+mutation UploadFile($id: Int!, $file: Upload!, $model: String, $name: String, $properties: Json) {
+  uploadFile(id: $id, file: $file, model: $model, name: $name, properties: $properties) {
     id
     name
     fileName
@@ -127,6 +150,7 @@ mutation UploadFile($id: Int!, $file: Upload!, $name: String, $properties: Json)
 ```json
 {
     "id": 1,
+    "model": null,
     "name": "PDF file",
     "properties": {
         "title": "test title",

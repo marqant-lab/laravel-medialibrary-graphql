@@ -10,7 +10,9 @@ return [
      * you can specify any model to attach media files
      */
     'models' => [
-        'main' => config('auth.providers.users.model'),
+        'default' => config('auth.providers.users.model'),
+        // add other models, example:
+        // 'one_more_model' => \Some\Namespace\Model::class,
     ],
 
     /**
@@ -81,7 +83,8 @@ return [
          * You will get this array as content:
          * [
          *    'action' => 'got files list',
-         *    'owner'  => files owner - instance of config('laravel-medialibrary-graphql.models.main'),
+         *    'owner'  => files owner - instance of config('laravel-medialibrary-graphql.models.{model}'),
+         *    'model'  => class name of the model from config,
          * ]
          */
         'got_list' => [
@@ -91,7 +94,8 @@ return [
          * You will get this array as content:
          * [
          *    'action' => 'uploaded file',
-         *    'owner'  => file owner - instance of config('laravel-medialibrary-graphql.models.main'),
+         *    'owner'  => file owner - instance of config('laravel-medialibrary-graphql.models.{model}'),
+         *    'model'  => class name of the model from config,
          *    'file'   => instance of Illuminate\Http\UploadedFile,
          *    'name'   => param 'name' from GraphQL mutation (file name if it was empty),
          *    'props'  => param 'properties' from GraphQL mutation (empty array if it was empty),
@@ -104,7 +108,8 @@ return [
          * You will get this array as content:
          * [
          *    'action' => 'downloaded file',
-         *    'owner'  => file owner - instance of config('laravel-medialibrary-graphql.models.main'),
+         *    'owner'  => file owner - instance of downloaded file model,
+         *    'model'  => class name of the model from config,
          *    'media'  => instance of Spatie\MediaLibrary\MediaCollections\Models\Media,
          * ]
          */
@@ -115,7 +120,8 @@ return [
          * You will get this array as content:
          * [
          *    'action' => 'deleted file',
-         *    'owner'  => file owner - instance of config('laravel-medialibrary-graphql.models.main'),
+         *    'owner'  => file owner - instance of deleted file model,
+         *    'model'  => class name of the model from config,
          *    'media'  => instance of Spatie\MediaLibrary\MediaCollections\Models\Media,
          * ]
          */
@@ -126,7 +132,8 @@ return [
          * You will get this array as content:
          * [
          *    'action' => 'deleted all media files',
-         *    'owner'  => file owner - instance of config('laravel-medialibrary-graphql.models.main'),
+         *    'owner'  => file owner - instance of config('laravel-medialibrary-graphql.models.{model}'),
+         *    'model'  => class name of the model from config,
          * ]
          */
         'deleted_all' => [

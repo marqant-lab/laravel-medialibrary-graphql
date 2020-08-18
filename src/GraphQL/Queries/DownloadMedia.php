@@ -61,6 +61,7 @@ class DownloadMedia
             'action' => 'downloaded file',
             'media'  => $Media,
             'owner'  => $FileOwner,
+            'model'  => get_class($FileOwner),
         ];
 
         // execute pipelines and get base64 file string after

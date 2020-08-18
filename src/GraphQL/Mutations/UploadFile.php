@@ -48,7 +48,9 @@ class UploadFile
             throw new Exception(__("Trying to upload not valid file. Please try another one or contact support to check logs."));
         }
 
-        $Model = app(config('laravel-medialibrary-graphql.models.main'));
+        $model_key   = $args['model'] ?? 'default';
+        $model_class = config("laravel-medialibrary-graphql.models.$model_key");
+        $Model       = app($model_class);
 
         try {
             /** @var HasMedia $FileOwner */
@@ -65,11 +67,11 @@ class UploadFile
 
             $name = $args['name'] ?? pathinfo($File->getClientOriginalName(), PATHINFO_FILENAME);
 
-
             // pipelines data
             $pipelines_data = [
                 'action' => 'uploaded file',
                 'owner'  => $FileOwner,
+                'model'  => $model_class,
                 'file'   => $File,
                 'name'   => $name,
                 'props'  => $args['properties'] ?? [],
