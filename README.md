@@ -16,19 +16,19 @@ But you can change this after publish package config and change `'laravel-medial
 Require the package through composer.
 
 ```shell script
-$ composer require marqant-lab/laravel-medialibrary-graphql
-```
-
-Publish the configuration.
-
-```shell script
-$ php artisan vendor:publish --provider="Marqant\LaravelMediaLibraryGraphQL\Providers\LaravelMediaLibraryGraphQLServiceProvider" --tag=config
+composer require marqant-lab/laravel-medialibrary-graphql
 ```
 
 You will have to run the migrations to setup the media table.
 
 ```schell script
-$ php artisan migrate
+php artisan migrate
+```
+
+Publish the configuration.
+
+```shell script
+php artisan vendor:publish --provider="Marqant\LaravelMediaLibraryGraphQL\Providers\LaravelMediaLibraryGraphQLServiceProvider" --tag=config
 ```
 
 In this config you can specify a model to assign files to ('models.main') and many other settings. The model should implements `Spatie\MediaLibrary\HasMedia` interface and use `Spatie\MediaLibrary\InteractsWithMedia` trait.
@@ -37,12 +37,10 @@ For example User model:
 
 ```php
 <?php
-
-namespace App\Models;
-
+...
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-
+...
 class User extends ... implements HasMedia
 {
     use InteractsWithMedia;
@@ -69,10 +67,22 @@ apiKey: {your_secure_api_key}
 This package uses  `@guard`  directive for secure. You need to setup our [marqant-lab/auth-graphql](https://github.com/marqant-lab/auth-graphql) package for this.
 
 And add this to your 'config/lighthouse.php':
+```php
+...
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Guard
+    |--------------------------------------------------------------------------
+...
+    */
+
+    'guard' => 'sanctum',
+...
+```
 
 After this add import to your `schema.graphql`
 
-```graphql
+```GraphQL
 #import ../vendor/marqant-lab/lighthouse-json/graphql/*.graphql
 #import ../vendor/marqant-lab/laravel-medialibrary-graphql/graphql/*.graphql
 ```
