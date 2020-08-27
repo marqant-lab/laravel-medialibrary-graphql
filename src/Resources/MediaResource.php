@@ -20,6 +20,8 @@ class MediaResource extends JsonResource
      */
     public function toArray($request)
     {
+        $additional_field = config('laravel-medialibrary-graphql.additional_field.name') ?? 'additional_field';
+
         return [
             'id'          => $this->id,
             'name'        => $this->name,
@@ -33,6 +35,7 @@ class MediaResource extends JsonResource
             'updated_at'  => $this->updated_at,
             'downloadUrl' => (config('laravel-medialibrary-graphql.properties_flags.enable_media_download_url'))
                 ? $this->getDownloadUrl($this->uuid) : '',
+            $this->toCamelCase($additional_field) => $this->{$additional_field},
         ];
     }
 
@@ -43,5 +46,17 @@ class MediaResource extends JsonResource
     private function getDownloadUrl($uuid): string
     {
         return URL::to('/') . "/media/download/$uuid/";
+    }
+
+    /**
+     * Converts snake_case to camelCase
+     *
+     * @param string $word
+     *
+     * @return string
+     */
+    private function toCamelCase(string $word): string
+    {
+        return lcfirst(str_replace(' ', '', ucwords(strtr($word, '_-', ' '))));
     }
 }

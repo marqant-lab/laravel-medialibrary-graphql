@@ -48,6 +48,26 @@ return [
     ],
 
     /**
+     * Additional field
+     *
+     * you can add one more field to the `media` table
+     *   in snake_case
+     * create migration for this field in your project
+     * coming soon: generate migration
+     * and extend GraphQL type Media (add this field)
+     *   in camelCase
+     *
+     * example:
+     *   add `additional_field` as config 'additional_field.name'
+     *   extend GraphQL type Media with 'additionalField' property
+     *
+     */
+    'additional_field' => [
+        'name' => null,
+        'type' => 'string',
+    ],
+
+    /**
      * Validation rules
      *
      *
