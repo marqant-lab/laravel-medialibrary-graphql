@@ -78,17 +78,30 @@ class UploadFile
             ];
 
             // execute pipelines and save file after
-            app(Pipeline::class)
+            $NewMedia = app(Pipeline::class)
                 ->send($pipelines_data)
                 ->through(config('laravel-medialibrary-graphql.pipelines.uploaded'))
                 ->then(
                     function () use ($FileOwner, $File, $name, $args) {
-                        $FileOwner->addMedia($File)
+                        $NewMedia = $FileOwner->addMedia($File)
                             ->usingName($name)
                             ->withCustomProperties($args['properties'] ?? [])
                             ->toMediaCollection(config('laravel-medialibrary-graphql.def_media_collection'));
+
+                        return $NewMedia;
                     }
                 );
+
+            // after created new Media pipes
+            app(Pipeline::class)
+                ->send([
+                    'action' => 'created new Media',
+                    'owner'  => $FileOwner,
+                    'model'  => $model_class,
+                    'media'  => $NewMedia,
+                ])
+                ->through(config('laravel-medialibrary-graphql.pipelines.created_new_media'))
+                ->thenReturn();
 
             /** @var Media[]|Collection $Medias */
             $Medias = $FileOwner->getMedia(config('laravel-medialibrary-graphql.def_media_collection'));

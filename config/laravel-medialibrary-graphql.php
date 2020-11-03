@@ -127,6 +127,18 @@ return [
         /**
          * You will get this array as content:
          * [
+         *     'action' => 'created new Media',
+         *     'owner'  => file owner - instance of config('laravel-medialibrary-graphql.models.{model}'),
+         *     'model'  => class name of the model from config,
+         *     'media'  => instance of Spatie\MediaLibrary\MediaCollections\Models\Media (or extended one),
+         * ]
+         */
+        'created_new_media' => [
+            \Marqant\LaravelMediaLibraryGraphQL\Pipelines\CreatedNewMediaAddLogPipeline::class,
+        ],
+        /**
+         * You will get this array as content:
+         * [
          *    'action' => 'downloaded file',
          *    'owner'  => file owner - instance of downloaded file model,
          *    'model'  => class name of the model from config,
