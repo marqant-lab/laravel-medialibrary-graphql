@@ -30,6 +30,12 @@ class LaravelMediaLibraryGraphQLServiceProvider extends ServiceProvider
         //////////////////////////////////
 
         $this->registerMutations();
+
+        //////////////////////////////////
+        // Custom Directives //
+        //////////////////////////////////
+
+        $this->registerDirectives();
     }
 
     public function boot()
@@ -59,6 +65,14 @@ class LaravelMediaLibraryGraphQLServiceProvider extends ServiceProvider
         config([
             'lighthouse.namespaces.mutations' => array_merge((array) config('lighthouse.namespaces.mutations'),
                 (array) 'Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Mutations'),
+        ]);
+    }
+
+    public function registerDirectives()
+    {
+        config([
+            'lighthouse.namespaces.directives' => array_merge((array) config('lighthouse.namespaces.directives'),
+                (array) 'Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Directives'),
         ]);
     }
 

@@ -22,6 +22,25 @@ return [
      */
     'apiKey' => env('MEDIA_API_KEY'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Guard
+    |--------------------------------------------------------------------------
+    |
+    | The guard to use for authenticating GraphQL requests, if needed.
+    | For example in directives such as `@guardMedia`.
+    | When not defined (or empty), the default from `lighthouse.php` is used.
+    | Can be string or array
+    | Examples:
+    | 'guard' => 'sanctum',
+    | 'guard' => ['api'],
+    | 'guard' => ['api', 'sanctum', 'custom-guard'],
+    |
+    | If it is an array Auth will be passed if at least one of guards is passed.
+    */
+
+    'guard' => 'sanctum',
+
     /**
      * Media collections
      *

@@ -1,6 +1,6 @@
 ##########
 
-extend type Query @guard {
+extend type Query @guardMedia {
     "Get all media for owner Model by ID"
     getMedia(id: Int!, model: String): [Media] @field(resolver: "Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Queries\\GetMedia")
     "Download media file for owner Model by  Media uuid"
@@ -10,7 +10,7 @@ extend type Query @guard {
 
 ##########
 
-extend type Mutation @guard {
+extend type Mutation @guardMedia {
     "Upload File mutation: id(ID of a Model to attach file), file, name(name of Media), properties(some more props)"
     uploadFile(id: Int!, file: Upload!, model: String, name: String, properties: Json): [Media]
         @field(resolver: "Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Mutations\\UploadFile")

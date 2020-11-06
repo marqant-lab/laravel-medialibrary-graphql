@@ -92,9 +92,12 @@ Content-Type: application/json
 apiKey: {your_secure_api_key}  
 ```
 
-This package uses  `@guard`  directive for secure. You need to setup our
+This package uses it's own  `@guardMedia`  directive for secure.  
+By default 'guard' in config is 'sanctum' but you can change
+ it after publish package's config file.  
+You can setup our
  [marqant-lab/auth-graphql](https://github.com/marqant-lab/auth-graphql)
- package for this and follow all instructions of auth package.
+ package for auth and follow all instructions of the package.
 
 After this add import to your `schema.graphql`
 
