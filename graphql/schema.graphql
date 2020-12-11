@@ -12,7 +12,7 @@ extend type Query @guardMedia {
 
 extend type Mutation @guardMedia {
     "Upload File mutation: id(ID of a Model to attach file), file, name(name of Media), properties(some more props)"
-    uploadFile(id: Int!, file: Upload!, model: String, name: String, properties: Json): [Media]
+    uploadFile(id: Int!, file: Upload!, model: String, name: String!, properties: Json): [Media]
         @field(resolver: "Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Mutations\\UploadFile")
     "Delete one current Media for owner Model by Media uuid"
     deleteMedia(uuid: String!): String
