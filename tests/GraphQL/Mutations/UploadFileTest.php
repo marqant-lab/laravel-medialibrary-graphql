@@ -43,7 +43,7 @@ class UploadFileTest extends TestCase
         $uploadFileResponse = $this->multipartGraphQL(
             [
                 'operations' => /** @lang JSON */ '{
-                    "query": "mutation UploadFile($id:Int!,$file:Upload!,$model:String,$name:String,$properties:Json){uploadFile(id:$id,file:$file,model:$model,name:$name,properties:$properties) {downloadUrl}}",
+                    "query": "mutation UploadFile($id:Int!,$file:Upload!,$model:String,$name:String!,$properties:Json){uploadFile(id:$id,file:$file,model:$model,name:$name,properties:$properties) {downloadUrl}}",
                     "variables": {
                         "id": ' . $Owner->id . ',
                         "model": null,
