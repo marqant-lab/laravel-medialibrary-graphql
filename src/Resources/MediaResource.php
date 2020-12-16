@@ -23,17 +23,17 @@ class MediaResource extends JsonResource
         $additional_field = config('laravel-medialibrary-graphql.additional_field.name') ?? 'additional_field';
 
         return [
-            'id'          => $this->id,
-            'name'        => $this->name,
-            'fileName'    => $this->file_name,
-            'path'        => (config('laravel-medialibrary-graphql.properties_flags.enable_media_path')) ? $this->getPath() : '',
-            'url'         => (config('laravel-medialibrary-graphql.properties_flags.enable_media_url')) ? $this->getUrl() : '',
-            'properties'  => $this->custom_properties,
-            'type'        => $this->type,
-            'uuid'        => $this->uuid,
-            'created_at'  => $this->created_at,
-            'updated_at'  => $this->updated_at,
-            'downloadUrl' => (config('laravel-medialibrary-graphql.properties_flags.enable_media_download_url'))
+            'id'           => $this->id,
+            'uuid'         => $this->uuid,
+            'name'         => $this->name,
+            'file_name'    => $this->file_name,
+            'path'         => (config('laravel-medialibrary-graphql.properties_flags.enable_media_path')) ? $this->getPath() : '',
+            'url'          => (config('laravel-medialibrary-graphql.properties_flags.enable_media_url')) ? $this->getUrl() : '',
+            'properties'   => $this->custom_properties,
+            'type'         => $this->type,
+            'created_at'   => $this->created_at,
+            'updated_at'   => $this->updated_at,
+            'download_url' => (config('laravel-medialibrary-graphql.properties_flags.enable_media_download_url'))
                 ? $this->getDownloadUrl($this->uuid) : '',
             $this->toCamelCase($additional_field) => $this->{$additional_field},
         ];

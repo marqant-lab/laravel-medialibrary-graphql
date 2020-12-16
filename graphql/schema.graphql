@@ -26,14 +26,14 @@ extend type Mutation @guardMedia {
 
 type Media {
     id: Int!
+    uuid: String!
     name: String!
-    fileName: String!
+    fileName: String! @rename(attribute: "file_name")
     path: String!
     url: String!
-    downloadUrl: String!
+    downloadUrl: String! @rename(attribute: "download_url")
     properties: Json
     type: String!
-    uuid: String!
     createdAt: DateTime! @rename(attribute: "created_at")
     updatedAt: DateTime @rename(attribute: "updated_at")
 }
