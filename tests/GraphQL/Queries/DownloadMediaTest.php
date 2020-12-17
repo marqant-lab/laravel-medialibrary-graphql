@@ -81,7 +81,7 @@ class DownloadMediaTest extends TestCase
             ]);
 
         $fileBase64  = $downloadMediaResponse->json('data.downloadMedia');
-        $checkBase64 = $this->is_base64($fileBase64);
+        $checkBase64 = $this->isBase64($fileBase64);
 
         // check if received valid Base64 file string
         $this->assertTrue($checkBase64);
@@ -92,7 +92,7 @@ class DownloadMediaTest extends TestCase
      *
      * @return bool
      */
-    private function is_base64(string $str): bool
+    private function isBase64(string $str): bool
     {
         if (base64_encode(base64_decode($str, true)) === $str) {
             return true;

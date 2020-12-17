@@ -59,5 +59,4 @@ SDL;
 
         $this->unauthenticated($guards);
     }
-
 }

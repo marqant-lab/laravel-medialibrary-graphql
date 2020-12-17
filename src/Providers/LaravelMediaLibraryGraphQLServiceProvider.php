@@ -17,7 +17,8 @@ class LaravelMediaLibraryGraphQLServiceProvider extends ServiceProvider
         // Config //
         //////////////////////////////////
         $this->mergeConfigFrom(
-            __DIR__ . '/../../config/laravel-medialibrary-graphql.php', 'laravel-medialibrary-graphql'
+            __DIR__ . '/../../config/laravel-medialibrary-graphql.php',
+            'laravel-medialibrary-graphql'
         );
         //////////////////////////////////
         // Custom Queries //
@@ -45,7 +46,8 @@ class LaravelMediaLibraryGraphQLServiceProvider extends ServiceProvider
 
         // Make Config publishable
         $this->publishes([
-            __DIR__ . '/../../config/laravel-medialibrary-graphql.php' => config_path('laravel-medialibrary-graphql.php'),
+            __DIR__ . '/../../config/laravel-medialibrary-graphql.php' =>
+                config_path('laravel-medialibrary-graphql.php'),
         ], 'config');
 
         // routes
@@ -55,24 +57,30 @@ class LaravelMediaLibraryGraphQLServiceProvider extends ServiceProvider
     public function registerQueries()
     {
         config([
-            'lighthouse.namespaces.queries' => array_merge((array) config('lighthouse.namespaces.queries'),
-                (array) 'Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Queries'),
+            'lighthouse.namespaces.queries' => array_merge(
+                (array) config('lighthouse.namespaces.queries'),
+                (array) 'Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Queries'
+            ),
         ]);
     }
 
     public function registerMutations()
     {
         config([
-            'lighthouse.namespaces.mutations' => array_merge((array) config('lighthouse.namespaces.mutations'),
-                (array) 'Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Mutations'),
+            'lighthouse.namespaces.mutations' => array_merge(
+                (array) config('lighthouse.namespaces.mutations'),
+                (array) 'Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Mutations'
+            ),
         ]);
     }
 
     public function registerDirectives()
     {
         config([
-            'lighthouse.namespaces.directives' => array_merge((array) config('lighthouse.namespaces.directives'),
-                (array) 'Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Directives'),
+            'lighthouse.namespaces.directives' => array_merge(
+                (array) config('lighthouse.namespaces.directives'),
+                (array) 'Marqant\\LaravelMediaLibraryGraphQL\\GraphQL\\Directives'
+            ),
         ]);
     }
 

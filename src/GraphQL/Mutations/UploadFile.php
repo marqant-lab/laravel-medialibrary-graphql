@@ -41,11 +41,13 @@ class UploadFile
         $validator = Validator::make($args, config('laravel-medialibrary-graphql.validation_rules.upload'));
 
         if ($validator->fails()) {
-            \Log::error("Marqant\LaravelMediaLibraryGraphQL\GraphQL\Mutations\UploadFile validation errors: \n" .
+            $namespace = 'Marqant\LaravelMediaLibraryGraphQL\GraphQL\Mutations\UploadFile';
+            \Log::error("$namespace validation errors: \n" .
                 print_r($validator->errors(), true) .
                 "\n  params: " . print_r($args, true));
 
-            throw new Exception(__("Trying to upload not valid file. Please try another one or contact support to check logs."));
+            $message = "Trying to upload not valid file. Please try another one or contact support to check logs.";
+            throw new Exception(__($message));
         }
 
         $model_key   = $args['model'] ?? 'default';

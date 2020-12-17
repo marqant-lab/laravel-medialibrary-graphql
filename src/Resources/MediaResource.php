@@ -12,6 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class MediaResource extends JsonResource
 {
+    private const CONFIG_KEY_PROP = 'laravel-medialibrary-graphql.properties_flags.';
     /**
      * Transform the resource collection into an array.
      *
@@ -27,13 +28,13 @@ class MediaResource extends JsonResource
             'uuid'         => $this->uuid,
             'name'         => $this->name,
             'file_name'    => $this->file_name,
-            'path'         => (config('laravel-medialibrary-graphql.properties_flags.enable_media_path')) ? $this->getPath() : '',
-            'url'          => (config('laravel-medialibrary-graphql.properties_flags.enable_media_url')) ? $this->getUrl() : '',
+            'path'         => (config(self::CONFIG_KEY_PROP . 'enable_media_path')) ? $this->getPath() : '',
+            'url'          => (config(self::CONFIG_KEY_PROP . 'enable_media_url')) ? $this->getUrl() : '',
             'properties'   => $this->custom_properties,
             'type'         => $this->type,
             'created_at'   => $this->created_at,
             'updated_at'   => $this->updated_at,
-            'download_url' => (config('laravel-medialibrary-graphql.properties_flags.enable_media_download_url'))
+            'download_url' => (config(self::CONFIG_KEY_PROP . 'enable_media_download_url'))
                 ? $this->getDownloadUrl($this->uuid) : '',
             $this->toCamelCase($additional_field) => $this->{$additional_field},
         ];
