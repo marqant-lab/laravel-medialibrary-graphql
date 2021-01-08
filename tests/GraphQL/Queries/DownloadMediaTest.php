@@ -48,6 +48,9 @@ class DownloadMediaTest extends TestCase
                 'description' => 'test description',
             ])
             ->toMediaCollection(config('laravel-medialibrary-graphql.def_media_collection'));
+        
+        // ensuring that we have the media list loaded
+        $Owner->load('media');
 
         /** @var Collection $Medias */
         $Medias = $Owner->getMedia(config('laravel-medialibrary-graphql.def_media_collection'));
