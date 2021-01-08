@@ -50,7 +50,7 @@ class UploadFile
             throw new Exception(__($message));
         }
 
-        $model_key   = $args['model'] ?? 'default';
+        $model_key   = strtolower($args['model'] ?? 'default');
         $model_class = config("laravel-medialibrary-graphql.models.$model_key");
         $Model       = app($model_class);
 
