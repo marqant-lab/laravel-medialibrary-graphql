@@ -71,6 +71,9 @@ class UploadFileTest extends TestCase
 
         // assert that the status is ok (200)
         $uploadFileResponse->assertOk();
+        
+        // ensuring that we have the media list loaded
+        $Owner->load('media');
 
         // set the media with the default collection
         $Medias = $Owner->getMedia(config('laravel-medialibrary-graphql.def_media_collection'));
