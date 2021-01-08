@@ -37,6 +37,9 @@ class GetMediaTest extends TestCase
         } else {
             $Owner = factory(config('laravel-medialibrary-graphql.models.default'))->create();
         }
+        
+        // ensuring that we have the media list loaded
+        $Owner->load('media');
 
         Storage::fake('public');
         $Owner->addMedia(UploadedFile::fake()->create('some-file.pdf', 1024))
