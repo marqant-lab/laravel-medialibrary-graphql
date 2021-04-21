@@ -21,6 +21,11 @@ class HasApiKey
      */
     public function handle($request, Closure $next)
     {
+        // pass it if the key is not set
+        if (empty(config('laravel-medialibrary-graphql.apiKey'))) {
+            return $next($request);
+        }
+
         if (empty($request->header('apiKey'))
             || $request->header('apiKey') !== config('laravel-medialibrary-graphql.apiKey')) {
             return response()->json('Invalid request! Empty or invalid api key', Response::HTTP_INTERNAL_SERVER_ERROR);
