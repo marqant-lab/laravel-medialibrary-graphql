@@ -295,7 +295,8 @@ class MediaLibraryService
     }
 
     /**
-     * @param array $args
+     * @param array  $args
+     * @param string $key
      *
      * @throws Exception
      */
