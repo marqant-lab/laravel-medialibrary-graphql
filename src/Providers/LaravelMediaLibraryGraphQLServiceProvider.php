@@ -3,6 +3,7 @@
 namespace Marqant\LaravelMediaLibraryGraphQL\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Marqant\LaravelMediaLibraryGraphQL\Services\MediaLibraryService;
 
 /**
  * Class LaravelMediaLibraryGraphQLServiceProvider
@@ -37,6 +38,11 @@ class LaravelMediaLibraryGraphQLServiceProvider extends ServiceProvider
         //////////////////////////////////
 
         $this->registerDirectives();
+
+        //////////////////////////////////
+        // Services //
+        //////////////////////////////////
+        $this->bindServices();
     }
 
     public function boot()
@@ -89,5 +95,18 @@ class LaravelMediaLibraryGraphQLServiceProvider extends ServiceProvider
 //        Route::prefix('api')
 //            ->group(dirname(__FILE__) . '/../../routes/routes.php');
         $this->loadRoutesFrom(__DIR__ . '/../../routes/routes.php');
+    }
+
+    /**
+     * Method to setup service bindings and stuff to be used in facades of this package.
+     *
+     * @return void
+     */
+    private function bindServices()
+    {
+        // MediaLibraryService as MediaLibrary
+        $this->app->singleton('laravel-medialibrary', function ($app) {
+            return new MediaLibraryService();
+        });
     }
 }

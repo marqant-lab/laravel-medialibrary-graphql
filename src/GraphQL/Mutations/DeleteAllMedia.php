@@ -3,11 +3,9 @@
 namespace Marqant\LaravelMediaLibraryGraphQL\GraphQL\Mutations;
 
 use \Exception;
-use Illuminate\Pipeline\Pipeline;
-use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Support\Facades\Validator;
 use \GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Marqant\LaravelMediaLibraryGraphQL\Facades\MediaLibrary;
 
 /**
  * Class DeleteAllMedia
@@ -33,43 +31,10 @@ class DeleteAllMedia
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         // validation
-        $validator = Validator::make($args, config('laravel-medialibrary-graphql.validation_rules.delete_all'));
+        MediaLibrary::validate($args, 'delete_all');
 
-        if ($validator->fails()) {
-            \Log::error("Marqant\LaravelMediaLibraryGraphQL\GraphQL\Mutations\DeleteMedia validation errors: \n" .
-                print_r($validator->errors(), true) .
-                "\n  params: " . print_r($args, true));
-
-            throw new Exception(__("Empty or wrong param(s)."));
-        }
-
-        $model_key   = $args['model'] ?? 'default';
-        $model_class = config("laravel-medialibrary-graphql.models.$model_key");
-        $Model       = app($model_class);
-
-        try {
-            /** @var HasMedia $FileOwner */
-            $FileOwner = $Model->findOrFail($args['id']);
-        } catch (Exception $exception) {
-            throw new Exception(__("Can't find Model by ID: ") . "{$args['id']}.");
-        }
-
-        // pipelines data
-        $pipelines_data = [
-            'action' => 'deleted all media files',
-            'owner'  => $FileOwner,
-            'model'  => $model_class,
-        ];
-
-        // execute pipelines and save file after
-        app(Pipeline::class)
-            ->send($pipelines_data)
-            ->through(config('laravel-medialibrary-graphql.pipelines.deleted_all'))
-            ->then(
-                function () use ($FileOwner) {
-                    $FileOwner->clearMediaCollection(config('laravel-medialibrary-graphql.def_media_collection'));
-                }
-            );
+        // delete all owner Media
+        MediaLibrary::deleteAllMedia($args);
 
         return;
     }

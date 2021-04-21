@@ -3,11 +3,9 @@
 namespace Marqant\LaravelMediaLibraryGraphQL\GraphQL\Queries;
 
 use \Exception;
-use Illuminate\Pipeline\Pipeline;
-use Illuminate\Support\Facades\Validator;
 use \GraphQL\Type\Definition\ResolveInfo;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Marqant\LaravelMediaLibraryGraphQL\Facades\MediaLibrary;
 
 /**
  * Class DownloadMedia
@@ -33,47 +31,9 @@ class DownloadMedia
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         // validation
-        $validator = Validator::make($args, config('laravel-medialibrary-graphql.validation_rules.download'));
+        MediaLibrary::validate($args, 'download');
 
-        if ($validator->fails()) {
-            \Log::error("Marqant\LaravelMediaLibraryGraphQL\GraphQL\Mutations\DownloadMedia validation errors: \n" .
-                print_r($validator->errors(), true) .
-                "\n  params: " . print_r($args, true));
-
-            throw new Exception(__("Empty or wrong param(s)."));
-        }
-
-        try {
-            /** @var Media $Media */
-            $Media = Media::query()
-                ->where('uuid', $args['uuid'])
-                ->firstOrFail();
-        } catch (Exception $exception) {
-            throw new Exception(__("Can't find Media file by UUID: ") . "'{$args['uuid']}'!");
-        }
-
-        // get file owner
-        $FileOwner = $Media->model()
-            ->get()->first();
-
-        // pipelines data
-        $pipelines_data = [
-            'action' => 'downloaded file',
-            'media'  => $Media,
-            'owner'  => $FileOwner,
-            'model'  => get_class($FileOwner),
-        ];
-
-        // execute pipelines and get base64 file string after
-        $file_base64 = app(Pipeline::class)
-            ->send($pipelines_data)
-            ->through(config('laravel-medialibrary-graphql.pipelines.downloaded'))
-            ->then(
-                function () use ($Media) {
-                    return base64_encode(stream_get_contents($Media->stream()));
-                }
-            );
-
-        return $file_base64;
+        // get Media in base64 format
+        return MediaLibrary::downloadMedia($args);
     }
 }

@@ -3,16 +3,9 @@
 namespace Marqant\LaravelMediaLibraryGraphQL\GraphQL\Mutations;
 
 use \Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Pipeline\Pipeline;
-use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
 use \GraphQL\Type\Definition\ResolveInfo;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Marqant\LaravelMediaLibraryGraphQL\Resources\MediaResource;
+use Marqant\LaravelMediaLibraryGraphQL\Facades\MediaLibrary;
 
 /**
  * Class UploadFile
@@ -38,85 +31,11 @@ class UploadFile
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         // validation
-        $validator = Validator::make($args, config('laravel-medialibrary-graphql.validation_rules.upload'));
+        MediaLibrary::validateUploadFile($args);
 
-        if ($validator->fails()) {
-            $namespace = 'Marqant\LaravelMediaLibraryGraphQL\GraphQL\Mutations\UploadFile';
-            \Log::error("$namespace validation errors: \n" .
-                print_r($validator->errors(), true) .
-                "\n  params: " . print_r($args, true));
+        // upload file
+        $Medias = MediaLibrary::uploadFile($args);
 
-            $message = "Trying to upload not valid file. Please try another one or contact support to check logs.";
-            throw new Exception(__($message));
-        }
-
-        $model_key   = strtolower($args['model'] ?? 'default');
-        $model_class = config("laravel-medialibrary-graphql.models.$model_key");
-        $Model       = app($model_class);
-
-        try {
-            /** @var HasMedia $FileOwner */
-            $FileOwner = $Model->findOrFail($args['id']);
-        } catch (Exception $exception) {
-            throw new Exception(__("Can't find Model by ID: ") . $args['id']);
-        }
-
-        try {
-            $request = new Request();
-
-            /** @var UploadedFile $File */
-            $File = $args['file'];
-
-            $name = $args['name'] ?? pathinfo($File->getClientOriginalName(), PATHINFO_FILENAME);
-
-            // pipelines data
-            $pipelines_data = [
-                'action' => 'uploaded file',
-                'owner'  => $FileOwner,
-                'model'  => $model_class,
-                'file'   => $File,
-                'name'   => $name,
-                'props'  => $args['properties'] ?? [],
-            ];
-
-            // execute pipelines and save file after
-            $NewMedia = app(Pipeline::class)
-                ->send($pipelines_data)
-                ->through(config('laravel-medialibrary-graphql.pipelines.uploaded'))
-                ->then(
-                    function () use ($FileOwner, $File, $name, $args) {
-                        $NewMedia = $FileOwner->addMedia($File)
-                            ->usingName($name)
-                            ->withCustomProperties($args['properties'] ?? [])
-                            ->toMediaCollection(config('laravel-medialibrary-graphql.def_media_collection'));
-
-                        return $NewMedia;
-                    }
-                );
-
-            // after created new Media pipes
-            app(Pipeline::class)
-                ->send([
-                    'action' => 'created new Media',
-                    'owner'  => $FileOwner,
-                    'model'  => $model_class,
-                    'media'  => $NewMedia,
-                ])
-                ->through(config('laravel-medialibrary-graphql.pipelines.created_new_media'))
-                ->thenReturn();
-
-            /** @var Media[]|Collection $Medias */
-            $Medias = $FileOwner->getMedia(config('laravel-medialibrary-graphql.def_media_collection'));
-
-            return MediaResource::collection($Medias)->toArray($request);
-        } catch (Exception $exception) {
-            \Log::error('Marqant\LaravelMediaLibraryGraphQL\GraphQL\Mutations\UploadFile ERROR ' .
-                "\n  params: " . print_r($args, true) .
-                "\n  error: " . $exception->getMessage() .
-                "\n  at: " . $exception->getFile() .
-                "\n line: " . $exception->getLine());
-
-            throw new Exception(__("Something went wrong! Please contact support."));
-        }
+        return $Medias;
     }
 }
